@@ -19,7 +19,7 @@ export class RequestLoggerMiddleware implements NestMiddleware {
           `${color}${duration}ms | ${method} ${originalUrl} | Status: ${statusCode}\x1b[0m`,
         )
       })
-    } 
+    }
     next()
   }
 }
