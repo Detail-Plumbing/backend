@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt'
 import { User } from '@prisma/client'
 import validator from 'validator'
 import { PrismaService } from 'src/prisma/prisma.service'
-import { Injectable, BadRequestException, HttpException, HttpStatus } from '@nestjs/common'
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
 
 interface LoginData {
   email: string
@@ -12,7 +12,7 @@ interface LoginData {
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async findUserByEmail(email: string) {
     const user = await this.prisma.user.findUnique({
@@ -26,11 +26,10 @@ export class AuthService {
 
   async userRegister(data: User) {
     const isEmail = validator.isEmail(data.email)
-    if (!isEmail)
-      throw new HttpException('Debes colocar un correo válido', HttpStatus.AMBIGUOUS)
+    if (!isEmail) throw new HttpException('Debes colocar un correo válido', HttpStatus.BAD_REQUEST)
 
     const user = await this.findUserByEmail(data.email)
-    if (user) throw new HttpException('Ese correo ya está registrado', HttpStatus.UNAUTHORIZED)
+    if (user) throw new HttpException('Ese correo ya está registrado', HttpStatus.CONFLICT)
 
     const hashedPassword = await bcrypt.hash(data.password, 10)
     data.password = hashedPassword
@@ -53,7 +52,6 @@ export class AuthService {
   }
 
   async loadUserByToken(token: string) {
-
     let id = -1
     let err = false
 
@@ -72,7 +70,7 @@ export class AuthService {
         },
       })
     } else {
-      throw new BadRequestException('Token invalido')
+      throw new HttpException('Token inválido', HttpStatus.UNAUTHORIZED)
     }
   }
 }
