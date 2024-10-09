@@ -1,7 +1,9 @@
 import { config } from 'dotenv'
-import { AppModule } from './modules/app.module'
+import { Logger } from '@nestjs/common'
+import { AppModule } from './app.module'
 import { ServerMode } from './types/server.mode'
 import { NestFactory } from '@nestjs/core'
+import ValidationPipe from './pipes/validation.pipe'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 config()
@@ -12,16 +14,19 @@ async function bootstrap() {
     const config = new DocumentBuilder()
       .setTitle('Swagger')
       .setDescription('The example API description')
+      .addBearerAuth()
       .setVersion('1.0')
-      .addTag('cats')
       .build()
 
     const document = SwaggerModule.createDocument(app, config)
     SwaggerModule.setup('api', app, document)
   }
 
-  await app.listen(process.env.PORT).then(() => {
-    console.log('¡Hola mundo! ' + process.env.PORT)
+  app.useGlobalPipes(ValidationPipe)
+
+  const { HOST, PORT } = process.env
+  await app.listen(PORT).then(() => {
+    Logger.log(`Server listening on http://${HOST}:${PORT}`, 'NestApplication')
   })
 }
 bootstrap()

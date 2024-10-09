@@ -1,14 +1,10 @@
 import * as jwt from 'jsonwebtoken'
 import * as bcrypt from 'bcrypt'
-import { User } from '@prisma/client'
 import validator from 'validator'
+import { LoginDto } from './dto/login.dto'
+import { RegisterDto } from './dto/register.dto'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
-
-interface LoginData {
-  email: string
-  password: string
-}
 
 @Injectable()
 export class AuthService {
@@ -24,7 +20,7 @@ export class AuthService {
     return user
   }
 
-  async userRegister(data: User) {
+  async userRegister(data: RegisterDto) {
     const isEmail = validator.isEmail(data.email)
     if (!isEmail) throw new HttpException('Debes colocar un correo válido', HttpStatus.BAD_REQUEST)
 
@@ -35,11 +31,16 @@ export class AuthService {
     data.password = hashedPassword
 
     return this.prisma.user.create({
-      data,
+      data: {
+        name: data.name,
+        email: data.email,
+        lastName: data.lastName,
+        password: data.password,
+      },
     })
   }
 
-  async userLogin(data: LoginData) {
+  async userLogin(data: LoginDto) {
     const user = await this.findUserByEmail(data.email)
     if (!user) throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND)
 

@@ -1,5 +1,6 @@
-import { User } from '@prisma/client'
-import { AuthService } from 'src/services/auth.service'
+import { LoginDto } from './dto/login.dto'
+import { RegisterDto } from './dto/register.dto'
+import { AuthService } from './auth.service'
 import { Controller, Post, Body, Get, Param } from '@nestjs/common'
 
 @Controller('/auth')
@@ -7,12 +8,12 @@ export class AuthController {
   constructor(private readonly appService: AuthService) {}
 
   @Post('/register')
-  register(@Body() data: User) {
+  register(@Body() data: RegisterDto) {
     return this.appService.userRegister(data)
   }
 
   @Post('/login')
-  login(@Body() data: User) {
+  login(@Body() data: LoginDto) {
     return this.appService.userLogin(data)
   }
 

@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service'
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 
 @Injectable()
-export class AppService {
+export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async getHello(id: number): Promise<String> {
