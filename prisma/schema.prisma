@@ -14,11 +14,34 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String    @db.VarChar(30)
-  email     String    @unique @db.VarChar(30)
-  avatar    String    @default("") @db.VarChar(200)
-  lastName  String    @db.VarChar(30)
-  password  String    @db.VarChar(200)
-  createdAt DateTime? @default(now())
+  id        Int        @id @default(autoincrement())
+  name      String     @unique @db.VarChar(30)
+  email     String     @unique @db.VarChar(30)
+  roles     RoleUser[]
+  avatar    String     @default("") @db.VarChar(200)
+  lastName  String     @db.VarChar(30)
+  password  String     @db.VarChar(200)
+  createdAt DateTime?  @default(now())
+}
+
+model Role {
+  id          Int              @id @default(autoincrement())
+  name        String           @db.VarChar(30)
+  users       RoleUser[]
+  permissions RolePermission[]
+}
+
+model RolePermission {
+  id     Int    @id @default(autoincrement())
+  name   String @db.VarChar(30)
+  role   Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId Int
+}
+
+model RoleUser {
+  id     Int  @id @default(autoincrement())
+  role   Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roleId Int
+  userId Int
 }
