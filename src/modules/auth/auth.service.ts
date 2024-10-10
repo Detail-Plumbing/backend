@@ -1,6 +1,5 @@
 import * as jwt from 'jsonwebtoken'
 import * as bcrypt from 'bcrypt'
-import validator from 'validator'
 import { LoginDto } from './dto/login.dto'
 import { RegisterDto } from './dto/register.dto'
 import { PrismaService } from 'src/prisma/prisma.service'
@@ -21,9 +20,6 @@ export class AuthService {
   }
 
   async userRegister(data: RegisterDto) {
-    const isEmail = validator.isEmail(data.email)
-    if (!isEmail) throw new HttpException('Debes colocar un correo válido', HttpStatus.BAD_REQUEST)
-
     const user = await this.findUserByEmail(data.email)
     if (user) throw new HttpException('Ese correo ya está registrado', HttpStatus.CONFLICT)
 
