@@ -15,6 +15,16 @@ export const perm = Object.freeze({
     addMember: 'ADD_MEMBERS_PROJECT',
     kickMember: 'KICK_MEMBERS_PROJECT',
   },
+  inventory: {
+    edit: 'EDIT_INVENTORY',
+    create: 'CREATE_INVENTORY',
+    delete: 'DELETE_INVENTORY',
+  },
+  tool: {
+    edit: 'EDIT_TOOL',
+    create: 'CREATE_TOOL',
+    delete: 'DELETE_TOOL',
+  },
   advanced: {
     administrator: '*' as const,
   },

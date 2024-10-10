@@ -18,6 +18,7 @@ model User {
   name      String     @unique @db.VarChar(30)
   email     String     @unique @db.VarChar(30)
   roles     RoleUser[]
+  tools     ToolUser[]
   avatar    String     @default("") @db.VarChar(200)
   lastName  String     @db.VarChar(30)
   password  String     @db.VarChar(200)
@@ -51,4 +52,28 @@ model Project {
   name        String    @db.VarChar(80)
   createdAt   DateTime? @default(now())
   description String    @db.VarChar(280)
+}
+
+model Inventory {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(80)
+  tools       Tool[]
+  createdAt   DateTime? @default(now())
+  description String    @db.VarChar(280)
+}
+
+model Tool {
+  id          Int        @id @default(autoincrement())
+  name        String     @db.VarChar(80)
+  inventory   Inventory  @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  toolUser    ToolUser[]
+  inventoryId Int
+}
+
+model ToolUser {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tool   Tool @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  userId Int
+  toolId Int
 }
