@@ -29,7 +29,7 @@ export class RoleService {
   }
 
   async loadAllRoles() {
-    return this.prisma.role.findMany({
+    const roles = await this.prisma.role.findMany({
       include: {
         users: {
           select: {
@@ -46,6 +46,11 @@ export class RoleService {
         permissions: true,
       },
     })
+
+    return roles.map((role) => ({
+      ...role,
+      users: role.users.map((userRelation) => userRelation.user),
+    }))
   }
 
   async editRole(id: number, name: string) {
