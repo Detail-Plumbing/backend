@@ -2,21 +2,23 @@ import { RoleModule } from './modules/role/role.module'
 import { UserModule } from './modules/user/user.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { PrismaModule } from 'src/prisma/prisma.module'
+import { ProjectModule } from './modules/project/project.module'
 import { AppController } from 'src/app.controller'
 import { AuthMiddleware } from 'src/middlewares/auth.middleware'
 import { UserController } from './modules/user/user.controller'
 import { RoleController } from './modules/role/role.controller'
+import { ProjectController } from './modules/project/project.controller'
 import { RequestLoggerMiddleware } from './middlewares/request.logger.middleware'
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 
 @Module({
-  imports: [PrismaModule, AuthModule, UserModule, RoleModule],
+  imports: [PrismaModule, AuthModule, UserModule, RoleModule, ProjectModule],
   controllers: [AppController],
   providers: [],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes(UserController, RoleController)
+    consumer.apply(AuthMiddleware).forRoutes(UserController, RoleController, ProjectController)
     consumer.apply(RequestLoggerMiddleware).forRoutes('*')
   }
 }

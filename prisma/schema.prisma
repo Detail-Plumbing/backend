@@ -45,3 +45,10 @@ model RoleUser {
   roleId Int
   userId Int
 }
+
+model Project {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(80)
+  createdAt   DateTime? @default(now())
+  description String    @db.VarChar(280)
+}
