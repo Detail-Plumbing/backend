@@ -20,7 +20,7 @@ export class RoleController {
 
   @Post('/create')
   @Permissions(perm.roles.create)
-  async createRole(@Body() createRoleDto: CreateRoleDto) {
+  createRole(@Body() createRoleDto: CreateRoleDto) {
     return this.roleService.createRole(createRoleDto.name)
   }
 
@@ -31,47 +31,47 @@ export class RoleController {
   }
 
   @Get('/load-all')
-  async loadAllRoles() {
+  loadAllRoles() {
     return this.roleService.loadAllRoles()
   }
 
   @Get('/find-by-id/:id')
-  async findRoleById(@Param('id') roleId: number) {
+  findRoleById(@Param('id') roleId: number) {
     return this.roleService.findRoleById(roleId)
   }
 
   @Put('/edit/:id')
   @Permissions(perm.roles.edit)
-  async editRole(@Param('id') id: number, @Body() body: EditRoleDto) {
+  editRole(@Param('id') id: number, @Body() body: EditRoleDto) {
     return this.roleService.editRole(id, body.name)
   }
 
   @Post('/assign-user')
   @Permissions(perm.roles.assingUser)
-  async assignRoleToUser(@Body() body: AssignRoleToUserDto) {
+  assignRoleToUser(@Body() body: AssignRoleToUserDto) {
     return this.roleService.assignRoleToUser(body.userId, body.roleId)
   }
 
   @Delete('/remove-user')
   @Permissions(perm.roles.removeUser)
-  async removeRoleToUser(@Body() body: RemoveRoleToUserDto) {
+  removeRoleToUser(@Body() body: RemoveRoleToUserDto) {
     return this.roleService.removeRoleFromUser(body.roleId, body.userId)
   }
 
   @Post('/add-permission')
   @Permissions(perm.roles.addPerm)
-  async addPermissionToRole(@Body() body: AddPermissionToRoleDto) {
+  addPermissionToRole(@Body() body: AddPermissionToRoleDto) {
     return this.roleService.addPermissionToRole(body.roleId, body.name)
   }
 
   @Delete('/remove-permission')
   @Permissions(perm.roles.removePerm)
-  async removePermissionFromRole(@Body() body: RemovePermissionFromRoleDto) {
+  removePermissionFromRole(@Body() body: RemovePermissionFromRoleDto) {
     return this.roleService.removePermissionFromRole(body.roleId, body.permissionName)
   }
 
   @Post('/user/has-permission')
-  async userHasPermission(@Body() body: UserHasPermissions) {
+  userHasPermission(@Body() body: UserHasPermissions) {
     return this.roleService.userHasPermission(body.userId, body.permissionName)
   }
 }

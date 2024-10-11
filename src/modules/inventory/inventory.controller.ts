@@ -15,29 +15,29 @@ export class InventoryController {
 
   @Post('/create')
   @Permissions(perm.inventory.create)
-  async createInventory(@Body() body: CreateInventoryDto) {
+  createInventory(@Body() body: CreateInventoryDto) {
     return this.inventoryService.createInventory(body)
   }
 
   @Put('/edit/:id')
   @Permissions(perm.inventory.edit)
-  async editInventory(@Body() body: EditInventoryDto, @Param('id') id: number) {
+  editInventory(@Body() body: EditInventoryDto, @Param('id') id: number) {
     return this.inventoryService.editInventory(id, body)
   }
 
   @Delete('/delete/:id')
   @Permissions(perm.inventory.delete)
-  async deleteInventory(@Param('id') id: number) {
+  deleteInventory(@Param('id') id: number) {
     return this.inventoryService.deleteInventory(id)
   }
 
   @Get('/find-by-id/:id')
-  async findInventoryById(@Param('id') id: number) {
+  findInventoryById(@Param('id') id: number) {
     return this.inventoryService.findInventoryById(id)
   }
 
   @Get('/find-all')
-  async findAllInventorys() {
+  findAllInventorys() {
     return this.inventoryService.findAllInventories()
   }
 }

@@ -16,45 +16,45 @@ export class ToolController {
 
   @Post('/create')
   @Permissions(perm.tool.create)
-  async createTool(@Body() body: CreateToolDto) {
+  createTool(@Body() body: CreateToolDto) {
     return this.toolService.createTool(body.name, body.inventoryId)
   }
 
   @Put('/edit/:id')
   @Permissions(perm.tool.edit)
-  async editTool(@Body() body: EditToolDto, @Param('id') id: number) {
+  editTool(@Body() body: EditToolDto, @Param('id') id: number) {
     return this.toolService.editTool(id, body)
   }
 
   @Delete('/delete/:id')
   @Permissions(perm.tool.delete)
-  async deleteTool(@Param('id') id: number) {
+  deleteTool(@Param('id') id: number) {
     return this.toolService.deleteTool(id)
   }
 
   @Get('/find-by-inventory-id/:id')
-  async findToolsByInventoryId(@Param('id') id: number) {
+  findToolsByInventoryId(@Param('id') id: number) {
     return this.toolService.findToolsByInventoryId(id)
   }
 
   @Get('/find-by-user-id/:id')
-  async findToolsByUserId(@Param('id') id: number) {
+  findToolsByUserId(@Param('id') id: number) {
     return this.toolService.findToolsByUserId(id)
   }
 
   @Get('/find-by-id/:id')
-  async findToolById(@Param('id') id: number) {
+  findToolById(@Param('id') id: number) {
     return this.toolService.findToolById(id)
   }
 
   @Post('/assign-user')
-  async assignToolToUser(@Body() body: ToolUserDto) {
-    return await this.toolService.assignToolToUser(body.toolId, body.userId)
+  assignToolToUser(@Body() body: ToolUserDto) {
+    return this.toolService.assignToolToUser(body.toolId, body.userId)
   }
 
   @Delete('/remove-user')
   async removeToolFromUser(@Body() body: ToolUserDto) {
-    return await this.toolService.removeToolFromUser(body.toolId, body.userId)
+    return this.toolService.removeToolFromUser(body.toolId, body.userId)
   }
 
   @Get('/find-all')
