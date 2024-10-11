@@ -1,11 +1,12 @@
-import { ApiBearerAuth } from '@nestjs/swagger'
 import { PermissionGuard } from 'src/guards/permission.guard'
 import { EditInventoryDto } from './dto/edit-inventory.dto'
 import { InventoryService } from './inventory.service'
 import { Permissions, perm } from 'src/decoratos/permissions.decorator'
 import { CreateInventoryDto } from './dto/create-inventory.dto'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common'
 
+@ApiTags('inventory')
 @Controller('/inventory')
 @ApiBearerAuth()
 @UseGuards(PermissionGuard)

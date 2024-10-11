@@ -1,16 +1,17 @@
 import { RoleService } from './role.service'
 import { EditRoleDto } from './dto/edit-role.dto'
 import { CreateRoleDto } from './dto/create-role.dto'
-import { ApiBearerAuth } from '@nestjs/swagger'
 import { PermissionGuard } from 'src/guards/permission.guard'
 import { Permissions, perm } from 'src/decoratos/permissions.decorator'
 import { UserHasPermissions } from './dto/user-has-permissions.dto'
 import { AssignRoleToUserDto } from './dto/assing-role-to-user.dto'
 import { RemoveRoleToUserDto } from './dto/remove-role-user.dto'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { AddPermissionToRoleDto } from './dto/add-permission-to-role.dto'
 import { RemovePermissionFromRoleDto } from './dto/remove-permission-from-role.dto'
 import { Controller, Post, Put, Delete, Body, Param, Get, UseGuards } from '@nestjs/common'
 
+@ApiTags('role')
 @Controller('/role')
 @ApiBearerAuth()
 @UseGuards(PermissionGuard)

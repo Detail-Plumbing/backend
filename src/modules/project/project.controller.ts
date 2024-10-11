@@ -1,11 +1,12 @@
-import { ApiBearerAuth } from '@nestjs/swagger'
 import { EditProjectDto } from './dto/edit-project.dto'
 import { ProjectService } from './project.service'
 import { PermissionGuard } from 'src/guards/permission.guard'
 import { CreateProjectDto } from './dto/create-project.dto'
 import { Permissions, perm } from 'src/decoratos/permissions.decorator'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common'
 
+@ApiTags('project')
 @Controller('/project')
 @ApiBearerAuth()
 @UseGuards(PermissionGuard)

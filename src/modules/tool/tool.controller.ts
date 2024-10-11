@@ -1,12 +1,13 @@
 import { EditToolDto } from './dto/edit-tool.dto'
 import { ToolUserDto } from './dto/tool-user.dto'
 import { ToolService } from './tool.service'
-import { ApiBearerAuth } from '@nestjs/swagger'
 import { CreateToolDto } from './dto/create-tool.dto'
 import { PermissionGuard } from 'src/guards/permission.guard'
 import { Permissions, perm } from 'src/decoratos/permissions.decorator'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common'
 
+@ApiTags('tool')
 @Controller('/tool')
 @ApiBearerAuth()
 @UseGuards(PermissionGuard)
