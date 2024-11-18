@@ -11,7 +11,9 @@ import { RoleController } from './modules/role/role.controller'
 import { ToolController } from './modules/tool/tool.controller'
 import { InventoryModule } from './modules/inventory/inventory.module'
 import { ProjectController } from './modules/project/project.controller'
+import { TrackingTimeModule } from './modules/trackingtime/trackingtime.module'
 import { InventoryController } from './modules/inventory/inventory.controller'
+import { TrackingTimeController } from './modules/trackingtime/trackingtime.controller'
 import { RequestLoggerMiddleware } from './middlewares/request.logger.middleware'
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 
@@ -24,6 +26,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
     PrismaModule,
     ProjectModule,
     InventoryModule,
+    TrackingTimeModule,
   ],
   controllers: [AppController],
   providers: [],
@@ -38,6 +41,7 @@ export class AppModule implements NestModule {
         RoleController,
         ProjectController,
         InventoryController,
+        TrackingTimeController,
       )
     consumer.apply(RequestLoggerMiddleware).forRoutes('*')
   }
