@@ -1,10 +1,12 @@
+import { ProjectUserDto } from './dto/project-user.dto'
+import { FindProjectDto } from './dto/find-projects.dto'
 import { EditProjectDto } from './dto/edit-project.dto'
 import { ProjectService } from './project.service'
 import { PermissionGuard } from 'src/guards/permission.guard'
 import { CreateProjectDto } from './dto/create-project.dto'
 import { Permissions, perm } from 'src/decoratos/permissions.decorator'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common'
 
 @ApiTags('project')
 @Controller('/project')
@@ -36,8 +38,23 @@ export class ProjectController {
     return this.projectService.findProjectById(id)
   }
 
-  @Get('/find-all')
-  findAllProjects() {
-    return this.projectService.findAllProjects()
+  @Post('/assign-user')
+  assignProjectToUser(@Body() body: ProjectUserDto) {
+    return this.projectService.assignProjectToUser(body.projectId, body.userId)
+  }
+
+  @Delete('/remove-user')
+  async removeProjectUser(@Body() body: ProjectUserDto) {
+    return this.projectService.removeProjectUser(body.projectId, body.userId)
+  }
+
+  @Get('/get-projects-by-page')
+  getProjectsByPage(@Query() query: FindProjectDto) {
+    return this.projectService.getProjectsByPage(query.page, query.pageSize)
+  }
+
+  @Get('/find-all-users-from-project/:id')
+  findAllUsersFromProject(@Param('id') id: number) {
+    return this.projectService.findUsersFromProject(id)
   }
 }

@@ -14,15 +14,17 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique @db.VarChar(30)
-  email     String     @unique @db.VarChar(30)
-  roles     RoleUser[]
-  tools     ToolUser[]
-  avatar    String     @default("") @db.VarChar(200)
-  lastName  String     @db.VarChar(30)
-  password  String     @db.VarChar(200)
-  createdAt DateTime?  @default(now())
+  id          Int           @id @default(autoincrement())
+  name        String        @unique @db.VarChar(30)
+  email       String        @unique @db.VarChar(30)
+  roles       RoleUser[]
+  tools       ToolUser[]
+  avatar      String        @default("") @db.VarChar(200)
+  lastName    String        @db.VarChar(30)
+  password    String        @db.VarChar(200)
+  createdAt   DateTime?     @default(now())
+  workingDay  WorkingDay[]
+  ProjectUser ProjectUser[]
 }
 
 model Role {
@@ -47,11 +49,33 @@ model RoleUser {
   userId Int
 }
 
+enum ProjectStatus {
+  WON
+  LOST
+  HOLD
+  NOT_SET
+  PENDING
+  PROGRESS
+}
+
 model Project {
-  id          Int       @id @default(autoincrement())
-  name        String    @db.VarChar(80)
-  createdAt   DateTime? @default(now())
-  description String    @db.VarChar(280)
+  id           Int           @id @default(autoincrement())
+  name         String        @db.VarChar(80)
+  note         String        @default("") @db.VarChar(200)
+  status       ProjectStatus @default(PROGRESS)
+  address      String        @default("") @db.VarChar(200)
+  createdAt    DateTime?     @default(now())
+  description  String        @db.VarChar(280)
+  ProjectUser  ProjectUser[]
+  shippingDate String?
+}
+
+model ProjectUser {
+  id        Int     @id @default(autoincrement())
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId Int
 }
 
 model Inventory {
@@ -76,4 +100,13 @@ model ToolUser {
   tool   Tool @relation(fields: [toolId], references: [id], onDelete: Cascade)
   userId Int
   toolId Int
+}
+
+model WorkingDay {
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  endTime   DateTime?
+  startTime DateTime  @default(now())
+  createdAt DateTime? @default(now())
 }
