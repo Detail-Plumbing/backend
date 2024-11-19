@@ -46,10 +46,29 @@ export class ProjectService {
   async getProjectsByPage(page: number, pageSize: number) {
     const skip = (page - 1) * pageSize
 
-    return await this.prisma.project.findMany({
+    const projects = await this.prisma.project.findMany({
       skip,
       take: pageSize,
+      include: {
+        ProjectUser: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+                lastName: true,
+              },
+            },
+          },
+        },
+      },
     })
+
+    return projects.map((project) => ({
+      ...project,
+      ProjectUser: project.ProjectUser.map((pu) => pu.user),
+    }))
   }
 
   async assignProjectToUser(projectId: number, userId: number) {
