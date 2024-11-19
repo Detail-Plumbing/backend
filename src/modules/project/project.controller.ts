@@ -1,4 +1,4 @@
-import { ProjectUserDto } from './dto/project-user.dto'
+import { ProjectTeamDto } from './dto/project-team.dto'
 import { FindProjectDto } from './dto/find-projects.dto'
 import { EditProjectDto } from './dto/edit-project.dto'
 import { ProjectService } from './project.service'
@@ -39,13 +39,13 @@ export class ProjectController {
   }
 
   @Post('/assign-user')
-  assignProjectToUser(@Body() body: ProjectUserDto) {
+  assignProjectToUser(@Body() body: ProjectTeamDto) {
     return this.projectService.assignProjectToUser(body.projectId, body.userId)
   }
 
   @Delete('/remove-user')
-  async removeProjectUser(@Body() body: ProjectUserDto) {
-    return this.projectService.removeProjectUser(body.projectId, body.userId)
+  async removeProjectTeam(@Body() body: ProjectTeamDto) {
+    return this.projectService.removeProjectTeam(body.projectId, body.userId)
   }
 
   @Get('/get-projects-by-page')

@@ -24,7 +24,7 @@ model User {
   password    String        @db.VarChar(200)
   createdAt   DateTime?     @default(now())
   workingDay  WorkingDay[]
-  ProjectUser ProjectUser[]
+  projectTeam ProjectTeam[]
 }
 
 model Role {
@@ -66,11 +66,11 @@ model Project {
   address      String        @default("") @db.VarChar(200)
   createdAt    DateTime?     @default(now())
   description  String        @db.VarChar(280)
-  ProjectUser  ProjectUser[]
+  projectTeam  ProjectTeam[]
   shippingDate String?
 }
 
-model ProjectUser {
+model ProjectTeam {
   id        Int     @id @default(autoincrement())
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int

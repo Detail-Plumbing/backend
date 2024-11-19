@@ -50,7 +50,7 @@ export class ProjectService {
       skip,
       take: pageSize,
       include: {
-        ProjectUser: {
+        projectTeam: {
           include: {
             user: {
               select: {
@@ -67,7 +67,7 @@ export class ProjectService {
 
     return projects.map((project) => ({
       ...project,
-      ProjectUser: project.ProjectUser.map((pu) => pu.user),
+      projectTeam: project.projectTeam.map((item) => item.user),
     }))
   }
 
@@ -79,7 +79,7 @@ export class ProjectService {
       throw new BadRequestException('The project is already assigned to the user.')
     }
 
-    return this.prisma.projectUser.create({
+    return this.prisma.projectTeam.create({
       data: {
         userId,
         projectId,
@@ -87,7 +87,7 @@ export class ProjectService {
     })
   }
 
-  async removeProjectUser(projectId: number, userId: number) {
+  async removeProjectTeam(projectId: number, userId: number) {
     await this.validateProjectAndUser(projectId, userId)
 
     const isAssigned = await this.isProjectAssigned(projectId, userId)
@@ -95,7 +95,7 @@ export class ProjectService {
       throw new BadRequestException('The project is not assigned to the user.')
     }
 
-    return this.prisma.projectUser.deleteMany({
+    return this.prisma.projectTeam.deleteMany({
       where: {
         userId,
         projectId,
@@ -104,7 +104,7 @@ export class ProjectService {
   }
 
   async findUsersFromProject(projectId: number) {
-    return await this.prisma.projectUser.findMany({
+    return await this.prisma.projectTeam.findMany({
       where: {
         projectId,
       },
@@ -120,7 +120,7 @@ export class ProjectService {
   }
 
   private async isProjectAssigned(projectId: number, userId: number) {
-    const assignment = await this.prisma.projectUser.findFirst({
+    const assignment = await this.prisma.projectTeam.findFirst({
       where: {
         userId,
         projectId,
