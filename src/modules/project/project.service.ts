@@ -9,7 +9,7 @@ export class ProjectService {
   constructor(
     private userService: UserService,
     private prisma: PrismaService,
-  ) { }
+  ) {}
 
   async findProjectById(id: number) {
     const project = await this.prisma.project.findUnique({ where: { id } })
@@ -44,15 +44,15 @@ export class ProjectService {
   }
 
   async getProjectsByPage(page: number, pageSize: number, filterByDays?: number) {
-    const skip = (page - 1) * pageSize;
-  
-    let daysAgo: Date | undefined;
+    const skip = (page - 1) * pageSize
+
+    let daysAgo: Date | undefined
     if (filterByDays !== undefined && !isNaN(filterByDays)) {
-      daysAgo = new Date();
-      daysAgo.setDate(daysAgo.getDate() - filterByDays);
-      console.log('Fecha límite para el filtro:', daysAgo);
+      daysAgo = new Date()
+      daysAgo.setDate(daysAgo.getDate() - filterByDays)
+      console.log('Fecha límite para el filtro:', daysAgo)
     }
-  
+
     const projects = await this.prisma.project.findMany({
       skip,
       take: pageSize,
@@ -73,14 +73,13 @@ export class ProjectService {
           },
         },
       },
-    });
-  
+    })
+
     return projects.map((project) => ({
       ...project,
       projectTeam: project.projectTeam.map((item) => item.user),
-    }));
+    }))
   }
-  
 
   async assignProjectToUser(projectId: number, userId: number) {
     await this.validateProjectAndUser(projectId, userId)
