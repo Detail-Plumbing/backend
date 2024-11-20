@@ -65,6 +65,18 @@ export class AuthService {
         where: {
           id,
         },
+        include: {
+          roles: {
+            include: {
+              role: {
+                select: {
+                  name: true,
+                  permissions: true,
+                },
+              },
+            },
+          },
+        },
       })
     } else {
       throw new HttpException('Token inválido', HttpStatus.UNAUTHORIZED)
