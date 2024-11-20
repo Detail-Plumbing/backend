@@ -50,7 +50,7 @@ export class ProjectController {
 
   @Get('/get-projects-by-page')
   getProjectsByPage(@Query() query: FindProjectDto) {
-    return this.projectService.getProjectsByPage(query.page, query.pageSize)
+    return this.projectService.getProjectsByPage(query.page, query.pageSize, query.filterByDays)
   }
 
   @Get('/find-all-users-from-project/:id')
