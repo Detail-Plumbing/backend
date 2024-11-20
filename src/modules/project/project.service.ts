@@ -50,6 +50,7 @@ export class ProjectService {
     if (filterByDays !== undefined && !isNaN(filterByDays)) {
       daysAgo = new Date()
       daysAgo.setDate(daysAgo.getDate() - filterByDays)
+      console.log('Fecha límite para el filtro:', daysAgo)
     }
 
     const projects = await this.prisma.project.findMany({
