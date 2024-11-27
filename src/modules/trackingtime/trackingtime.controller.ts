@@ -28,7 +28,7 @@ export class TrackingTimeController {
   }
 
   @Get('/get-work-time-per-week-by-user-id/:userId')
-  async getWorkTimePerWeekByUserId(@Param('userId') userId: number) {
+  getWorkTimePerWeekByUserId(@Param('userId') userId: number) {
     return this.trackingTimeService.getWorkTimePerWeekByUserId(userId)
   }
 }

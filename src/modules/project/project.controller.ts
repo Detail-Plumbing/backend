@@ -44,7 +44,7 @@ export class ProjectController {
   }
 
   @Delete('/remove-user')
-  async removeProjectTeam(@Body() body: ProjectTeamDto) {
+  removeProjectTeam(@Body() body: ProjectTeamDto) {
     return this.projectService.removeProjectTeam(body.projectId, body.userId)
   }
 

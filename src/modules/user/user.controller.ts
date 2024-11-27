@@ -9,7 +9,7 @@ import { Body, Controller, Get, Put, Query, Req } from '@nestjs/common'
 @Controller('/user')
 @ApiBearerAuth()
 export class UserController {
-  constructor(private readonly appService: UserService) { }
+  constructor(private readonly appService: UserService) {}
 
   @Get('/')
   getHello(@Req() req: Request): Promise<String> {

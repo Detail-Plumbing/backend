@@ -4,7 +4,7 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async findUserById(id: number) {
     const user = await this.prisma.user.findUnique({ where: { id } })
@@ -33,14 +33,14 @@ export class UserService {
           {
             name: {
               contains: name.toLowerCase(),
-            }
+            },
           },
           {
             lastName: {
               contains: name.toLowerCase(),
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
       select: {
         id: true,
@@ -48,8 +48,8 @@ export class UserService {
         email: true,
         avatar: true,
         lastName: true,
-        createdAt: true
-      }
-    });
+        createdAt: true,
+      },
+    })
   }
 }
