@@ -25,6 +25,29 @@ model User {
   createdAt   DateTime?     @default(now())
   workingDay  WorkingDay[]
   projectTeam ProjectTeam[]
+  note        Note[]
+  taskItem    TaskItem[]
+  SubTaskItem SubTaskItem[]
+}
+
+model NoteFile {
+  id        Int       @id @default(autoincrement())
+  note      Note?     @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  noteId    Int
+  fileUrl   String
+  createdAt DateTime? @default(now())
+}
+
+model Note {
+  id          Int           @id @default(autoincrement())
+  name        String        @default("") @db.VarChar(200)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
+  noteFile    NoteFile[]
+  createdAt   DateTime?     @default(now())
+  description String        @default("") @db.VarChar(200)
+  taskItem    TaskItem[]
+  subTaskItem SubTaskItem[]
 }
 
 model Role {
@@ -68,6 +91,7 @@ model Project {
   description  String        @db.VarChar(280)
   projectTeam  ProjectTeam[]
   shippingDate String?
+  tool         Tool[]
 }
 
 model ProjectTeam {
@@ -91,6 +115,8 @@ model Tool {
   name        String     @db.VarChar(80)
   inventory   Inventory  @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
   toolUser    ToolUser[]
+  project     Project?   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   Int?
   inventoryId Int
 }
 
@@ -109,4 +135,58 @@ model WorkingDay {
   endTime   DateTime?
   startTime DateTime  @default(now())
   createdAt DateTime? @default(now())
+}
+
+model TaskCategory {
+  id        Int         @id @default(autoincrement())
+  name      String      @default("") @db.VarChar(200)
+  createdAt DateTime?   @default(now())
+  taskTable TaskTable[]
+}
+
+model TaskTable {
+  id             Int          @id @default(autoincrement())
+  name           String       @default("") @db.VarChar(200)
+  color          String       @default("") @db.VarChar(200)
+  taskItem       TaskItem[]
+  createdAt      DateTime?    @default(now())
+  taskCategory   TaskCategory @relation(fields: [taskCategoryId], references: [id], onDelete: Cascade)
+  taskCategoryId Int
+}
+
+enum TaskItemStatus {
+  COMPLETE
+  PENDING
+  PROGRESS
+}
+
+model TaskItem {
+  id          Int            @id @default(autoincrement())
+  name        String         @default("") @db.VarChar(200)
+  note        Note?          @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  noteId      Int?
+  owner       User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId     Int
+  status      TaskItemStatus @default(PROGRESS)
+  endDate     String?
+  createdAt   DateTime?      @default(now())
+  taskTable   TaskTable      @relation(fields: [taskTableId], references: [id], onDelete: Cascade)
+  startDate   String?
+  taskTableId Int
+  subTaskItem SubTaskItem[]
+}
+
+model SubTaskItem {
+  id         Int            @id @default(autoincrement())
+  name       String         @default("") @db.VarChar(200)
+  note       Note?          @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  noteId     Int?
+  owner      User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  taskItem   TaskItem       @relation(fields: [taskItemId], references: [id], onDelete: Cascade)
+  taskItemId Int
+  ownerId    Int
+  status     TaskItemStatus @default(PROGRESS)
+  endDate    String?
+  createdAt  DateTime?      @default(now())
+  startDate  String?
 }

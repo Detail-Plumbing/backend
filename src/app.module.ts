@@ -2,11 +2,13 @@ import { ToolModule } from './modules/tool/tool.module'
 import { RoleModule } from './modules/role/role.module'
 import { UserModule } from './modules/user/user.module'
 import { AuthModule } from './modules/auth/auth.module'
+import { TaskModule } from './modules/task/task.module'
 import { PrismaModule } from 'src/prisma/prisma.module'
 import { ProjectModule } from './modules/project/project.module'
 import { AppController } from 'src/app.controller'
 import { AuthMiddleware } from 'src/middlewares/auth.middleware'
 import { UserController } from './modules/user/user.controller'
+import { TaskController } from './modules/task/task.controller'
 import { RoleController } from './modules/role/role.controller'
 import { ToolController } from './modules/tool/tool.controller'
 import { InventoryModule } from './modules/inventory/inventory.module'
@@ -21,6 +23,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
   imports: [
     AuthModule,
     UserModule,
+    TaskModule,
     RoleModule,
     ToolModule,
     PrismaModule,
@@ -38,6 +41,7 @@ export class AppModule implements NestModule {
       .forRoutes(
         UserController,
         ToolController,
+        TaskController,
         RoleController,
         ProjectController,
         InventoryController,
