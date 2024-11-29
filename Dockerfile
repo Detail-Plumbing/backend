@@ -12,6 +12,7 @@ COPY  ./ ./
 
 RUN npm install -g prisma@5.17.0
 RUN prisma generate
+COPY prisma ./prisma
 
 RUN npm run build
 
